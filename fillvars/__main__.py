@@ -1,4 +1,5 @@
 import sys
+
 if sys.version_info[0] < 3:
     raise Exception("Python 3 or a more recent version is required.")
 
@@ -22,11 +23,18 @@ class FillvarsOperationContainer:
         self.test_out = "No text yet"
         self.mode_input_is_path = path
         self.__load_input()
+
         self.__analisys()
+        if len(self.fields) == 0:
+            easygui.msgbox("There is no variable in the input", "Info")
+            return
+
         self.__get_values()
+        if self.values is None:  # was pressed Cancel
+            return
+
         self.__get_output_text()
         self.write()
-        pass
 
     def __load_input(self):
         if self.mode_input_is_path:
@@ -46,7 +54,6 @@ class FillvarsOperationContainer:
         msg = "Enter values"
         title = "Input"
         self.values = easygui.multenterbox(msg, title, self.fields)
-
 
     def __get_output_text(self):
         text_out = self.text_in  # type: str
@@ -78,7 +85,7 @@ class FillvarsOperationContainer:
 @click.option("--output", "-o",
               prompt=None,
               type=str,
-              default=".\\",
+              default=".\\out.txt",
               help='Output file path')
 def start(input_str, output, path):
     a = FillvarsOperationContainer(input_str, output, path)
