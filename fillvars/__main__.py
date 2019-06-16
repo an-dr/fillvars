@@ -87,9 +87,13 @@ class FillvarsOperationContainer:
               type=str,
               default=".\\out.txt",
               help='Output file path')
+def cli(input_str, output, path):
+    a = FillvarsOperationContainer(input_str, output, path)
+
+
 def start(input_str, output, path):
     a = FillvarsOperationContainer(input_str, output, path)
 
 
 if __name__ == '__main__':
-    start()
+    cli()
