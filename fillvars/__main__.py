@@ -87,8 +87,8 @@ def cli(input_str, output, path):
     FillvarsOperationContainer(input_str, output, path)
 
 
-def start(input_str, output, path):
-    FillvarsOperationContainer(input_str, output, path)
+def start(input_str, output, path, quiet=False):
+    FillvarsOperationContainer(input_str, output, path, quiet)
 
 
 if __name__ == '__main__':
