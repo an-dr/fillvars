@@ -1,8 +1,4 @@
 import sys
-
-if sys.version_info[0] < 3:
-    raise Exception("Python 3 or a more recent version is required.")
-
 import click
 import easygui
 import re
@@ -13,7 +9,7 @@ if sys.version_info[0] < 3:
 
 
 class FillvarsOperationContainer:
-    def __init__(self, input_str, output, path=False):
+    def __init__(self, input_str, output, path=False, quiet=False):
 
         self.input = input_str
         self.path_to_write = output
@@ -26,7 +22,8 @@ class FillvarsOperationContainer:
 
         self.__analisys()
         if len(self.fields) == 0:
-            easygui.msgbox("There is no variable in the input", "Info")
+            if not quiet:
+                easygui.msgbox("There is no variable in the input", "Info")
             return
 
         self.__get_values()
@@ -39,8 +36,7 @@ class FillvarsOperationContainer:
     def __load_input(self):
         if self.mode_input_is_path:
             if not path.exists(self.input):
-                print("There is no input file")
-                return
+                raise FileExistsError
             with open(self.input) as f:
                 self.text_in = f.read()
         else:
@@ -88,11 +84,11 @@ class FillvarsOperationContainer:
               default=".\\out.txt",
               help='Output file path')
 def cli(input_str, output, path):
-    a = FillvarsOperationContainer(input_str, output, path)
+    FillvarsOperationContainer(input_str, output, path)
 
 
 def start(input_str, output, path):
-    a = FillvarsOperationContainer(input_str, output, path)
+    FillvarsOperationContainer(input_str, output, path)
 
 
 if __name__ == '__main__':
